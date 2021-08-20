@@ -5,5 +5,5 @@
 [node name="GameMain" type="Node2D"]
 
 [node name="GameMap" type="Node2D" parent="."]
-scale = Vector2( 1.5, 1.5 )
+scale = Vector2( 2, 2 )
 script = ExtResource( 1 )

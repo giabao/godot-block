@@ -46,9 +46,8 @@ func _physics_process(_delta):
 	if get_slide_count() > 0:
 		var b = get_slide_collision(0).collider
 		if b.is_in_group("blocks"):
-			if b.canMove(d):
-				b.move(d)
-			# else: TODO sound ""
+			if !b.tryMove(d):
+				pass # TODO sound ""
 
 	
 	

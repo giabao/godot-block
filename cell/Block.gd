@@ -1,6 +1,11 @@
 class_name Block
 extends KinematicBody2D
 
+const CellType = GameData.CellType
+
+# param: changed: +1 | -1
+signal block_match_changed
+
 # The following vars will be init in GameMap when create Block
 var map: Array
 # TODO use Vector2i when upgrade to godot 4
@@ -19,10 +24,15 @@ func init(g: GameData, col: int, row: int) -> Block:
 	return self
 	
 var moveDirection := Vector2.ZERO # UP | DOWN | LEFT | RIGHT | ZERO
-# temp var to store position we want block to move to
-var moveTo := Vector2.ZERO
+
+func _nextPos() -> Vector2:
+	return GameData.pos(
+		col + int(moveDirection.x),
+		row + int(moveDirection.y)
+	)
 
 func endMove():
+	var moveTo := _nextPos()
 	match moveDirection:
 		Vector2.UP:    return position.y <= moveTo.y
 		Vector2.DOWN:  return position.y >= moveTo.y
@@ -34,44 +44,54 @@ func endMove():
 func _ready():
 	add_to_group("blocks")
 
+	if map[row][col] == GameData.CellType.Target:
+		emit_signal("block_match_changed", +1)
+
 func _physics_process(_delta):
 	if moveDirection == Vector2.ZERO:
 		return
 	
 	# print("%s: d=%s, v=%s, pos=%s, to=%s" % [name, moveDirection, v, position, moveTo])
 	if endMove():
-		position = moveTo
+		var prevMatched = map[row][col] == GameData.CellType.Target
+		map[row][col]
+		
 		col += int(moveDirection.x)
 		row += int(moveDirection.y)
 		moveDirection = Vector2.ZERO
+		position = GameData.pos(col, row)		
+
+		var matched = map[row][col] == GameData.CellType.Target
+		if !prevMatched && matched:
+			emit_signal("block_match_changed", +1)
+		if prevMatched && !matched:
+			emit_signal("block_match_changed", -1)
+		
 		return
 	
 	var v = Player.speed * 1.1 * moveDirection
 	self.move_and_slide(v)
-	if get_slide_count() > 0:
-		var collider = get_slide_collision(0).collider
-		print("%s: v=%s, c=%s" % [name, v, collider.name])
+
 
 # d: UP | DOWN | LEFT | RIGHT
-func move(d: Vector2):
-	print("%s move d=%s" % [name, d])
-	if moveDirection != Vector2.ZERO:
-		return
+# return true if this block is not moving and can be moved to the next pos
+func tryMove(d: Vector2) -> bool:
+	if moveDirection != Vector2.ZERO: # moving
+		return false
+	if ! _canMove(d):
+		return false
 	moveDirection = d
-	moveTo = GameData.pos(
-		col + int(moveDirection.x),
-		row + int(moveDirection.y)
-	)
-	print("%s moveTo %s" % [name, moveTo])
+	print("%s will move %s" % [name, moveDirection])
+	return true
 
 
-func canMove(d: Vector2) -> bool:
+func _canMove(d: Vector2) -> bool:
 	var c = col + int(d.x)
 	var r = row + int(d.y)
-	print("%s, %s, %s, %s, %s" % [col, row, c, r, map[r][c]])
+	print("(%s, %s) -> (%s, %s) == %s" % [col, row, c, r, map[r][c]])
 	if c < 0 || c >= n_col || r < 0 || r >= n_row:
 		return false
 	match map[r][c]:
-		GameData.CellType.None, GameData.CellType.Target: return true
+		CellType.None, CellType.Target: return true
 		_: return false
 	

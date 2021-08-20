@@ -882,7 +882,7 @@ nodes/up_animation/position = Vector2( -10, 470 )
 node_connections = [ "state", 0, "idle_animation", "state", 1, "TimeScale", "state", 2, "up_animation", "state", 3, "down_animation", "output", 0, "state", "TimeScale", 0, "run_animation" ]
 
 [sub_resource type="RectangleShape2D" id=24]
-extents = Vector2( 17.1515, 23.4059 )
+extents = Vector2( 3.27036, 7.24784 )
 
 [node name="SkeletalPlayer" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -1069,5 +1069,5 @@ bones = [ NodePath("Hip"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 internal_vertex_count = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -5.54271 )
+position = Vector2( 1.68249, -2.73027 )
 shape = SubResource( 24 )
