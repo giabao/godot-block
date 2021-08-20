@@ -4,9 +4,9 @@ extends Node2D
 const G = preload("GameData.gd")
 var g = G.new()
 
-const BrickScene = preload("res://Brick.tscn") 
-const BlockScene = preload("res://Block.tscn") 
-const TargetScene = preload("res://Target.tscn") 
+const BrickScene  = preload("res://cell/Brick.tscn")
+const BlockScene  = preload("res://cell/Block.tscn")
+const TargetScene = preload("res://cell/Target.tscn")
 const PlayerScene = preload("res://player/player.tscn") 
 
 func _ready():

@@ -1,8 +1,6 @@
 class_name Block
 extends KinematicBody2D
 
-const G = preload("GameData.gd") # TODO
-
 # The following vars will be init in GameMap when create Block
 var map: Array
 # TODO use Vector2i when upgrade to godot 4
@@ -12,7 +10,7 @@ var n_col: int
 var n_row: int
 
 # must be called before add this block to scene
-func init(g: G, col: int, row: int) -> Block:
+func init(g: GameData, col: int, row: int) -> Block:
 	map = g.map
 	self.col = col
 	self.row = row
@@ -74,6 +72,6 @@ func canMove(d: Vector2) -> bool:
 	if c < 0 || c >= n_col || r < 0 || r >= n_row:
 		return false
 	match map[r][c]:
-		G.CellType.None, G.CellType.Target: return true
+		GameData.CellType.None, GameData.CellType.Target: return true
 		_: return false
 	

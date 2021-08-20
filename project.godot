@@ -9,10 +9,10 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "KinematicBody2D",
+"base": "Reference",
 "class": "Block",
 "language": "GDScript",
-"path": "res://Block.gd"
+"path": "res://cell/Block.gd"
 }, {
 "base": "Reference",
 "class": "GameData",
@@ -29,10 +29,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://player/player.gd"
 }, {
-"base": "Area2D",
+"base": "Reference",
 "class": "Target",
 "language": "GDScript",
-"path": "res://Target.gd"
+"path": "res://cell/Target.gd"
 } ]
 _global_script_class_icons={
 "Block": "",
