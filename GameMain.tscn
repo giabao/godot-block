@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://GameMap.gd" type="Script" id=1]
+
+[node name="GameMain" type="Node2D"]
+
+[node name="GameMap" type="Node2D" parent="."]
+scale = Vector2( 1.5, 1.5 )
+script = ExtResource( 1 )
