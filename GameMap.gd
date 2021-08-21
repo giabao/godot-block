@@ -2,8 +2,8 @@ class_name GameMap
 extends Node2D
 
 const BrickScene  = preload("res://cell/Brick.tscn")
-const BlockScene  = preload("res://cell/Block.tscn")
 const TargetScene = preload("res://cell/Target.tscn")
+const BlockScene  = preload("res://block/Block.tscn")
 const PlayerScene = preload("res://player/player.tscn") 
 
 const CellType = GameData.CellType

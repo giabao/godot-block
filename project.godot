@@ -12,7 +12,12 @@ _global_script_classes=[ {
 "base": "Movable",
 "class": "Block",
 "language": "GDScript",
-"path": "res://cell/Block.gd"
+"path": "res://block/Block.gd"
+}, {
+"base": "State",
+"class": "BlockMoving",
+"language": "GDScript",
+"path": "res://block/BlockMoving.gd"
 }, {
 "base": "Reference",
 "class": "GameData",
@@ -34,6 +39,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://player/player.gd"
 }, {
+"base": "PlayerState",
+"class": "PlayerIdle",
+"language": "GDScript",
+"path": "res://player/PlayerIdle.gd"
+}, {
+"base": "PlayerState",
+"class": "PlayerMoving",
+"language": "GDScript",
+"path": "res://player/PlayerMoving.gd"
+}, {
+"base": "State",
+"class": "PlayerState",
+"language": "GDScript",
+"path": "res://player/PlayerState.gd"
+}, {
 "base": "Node",
 "class": "State",
 "language": "GDScript",
@@ -51,10 +71,14 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Block": "",
+"BlockMoving": "",
 "GameData": "",
 "GameMap": "",
 "Movable": "",
 "Player": "",
+"PlayerIdle": "",
+"PlayerMoving": "",
+"PlayerState": "",
 "State": "",
 "StateMachine": "",
 "Target": ""
@@ -76,6 +100,10 @@ window/size/height=900
 window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep_height"
+
+[global]
+
+indent=false
 
 [input]
 

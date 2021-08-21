@@ -1,7 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://player/player.gd" type="Script" id=1]
 [ext_resource path="res://player/gBot.png" type="Texture" id=2]
+[ext_resource path="res://fsm/StateMachine.gd" type="Script" id=3]
+[ext_resource path="res://player/PlayerIdle.gd" type="Script" id=4]
+[ext_resource path="res://player/PlayerMoving.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=25]
 resource_name = "down"
@@ -1066,3 +1069,13 @@ internal_vertex_count = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 24 )
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 3 )
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource( 4 )
+
+[node name="Moving" type="Node" parent="StateMachine"]
+script = ExtResource( 5 )

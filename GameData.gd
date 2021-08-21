@@ -7,6 +7,22 @@ enum CellType {
 const CellSize = Vector2(64, 64)
 const Padding = Vector2(1, 1)
 
+# const levels := [
+# {
+# 	map = [
+# 		[0,1,1,1,1,1,1,0],
+# 		[1,1,0,0,0,0,1,1],
+# 		[1,0,2,2,0,0,0,1],
+# 		[1,0,1,0,0,0,0,1],
+# 		[1,0,0,0,1,0,2,1],
+# 		[1,1,1,1,1,1,1,1],
+# 	],
+# 	blocks = [
+# 		[4,3], [5,3], [6,3]
+# 	],
+# 	player = [5,4]
+# },
+# ]
 # Values are in enum CellType
 const map: Array = [
 	[0,1,1,1,1,1,1,0],
@@ -64,8 +80,14 @@ static func reached(node: Node2D, direction: Vector2, targetPos: Vector2) -> boo
 		_:             return true
 
 # pos: Vector2i
-# direction: Vector2i = UP | DOWN | LEFT | RIGHT
-func canPushBlock(pos: Vector2, direction: Vector2) -> bool:
-	var nextPos = pos + direction
+# d: Vector2i = UP | DOWN | LEFT | RIGHT
+func canPushBlock(pos: Vector2, d: Vector2) -> bool:
+	var nextPos = pos + d
 	return isBlankAt(nextPos) && !blocks.has(nextPos)
 
+# d: Vector2i = UP | DOWN | LEFT | RIGHT
+func canMovePlayer(pos: Vector2, d: Vector2) -> bool:
+	var nextPos = pos + d
+	return isBlankAt(nextPos) && (
+		!blocks.has(nextPos) || canPushBlock(nextPos, d)
+	)
