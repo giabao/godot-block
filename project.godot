@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Reference",
+"base": "Movable",
 "class": "Block",
 "language": "GDScript",
 "path": "res://cell/Block.gd"
@@ -25,11 +25,26 @@ _global_script_classes=[ {
 "path": "res://GameMap.gd"
 }, {
 "base": "KinematicBody2D",
+"class": "Movable",
+"language": "GDScript",
+"path": "res://cell/Movable.gd"
+}, {
+"base": "Movable",
 "class": "Player",
 "language": "GDScript",
 "path": "res://player/player.gd"
 }, {
-"base": "Reference",
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://fsm/State.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://fsm/StateMachine.gd"
+}, {
+"base": "Area2D",
 "class": "Target",
 "language": "GDScript",
 "path": "res://cell/Target.gd"
@@ -38,7 +53,10 @@ _global_script_class_icons={
 "Block": "",
 "GameData": "",
 "GameMap": "",
+"Movable": "",
 "Player": "",
+"State": "",
+"StateMachine": "",
 "Target": ""
 }
 

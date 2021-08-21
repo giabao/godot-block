@@ -1,7 +1,7 @@
 class_name GameData
 
 enum CellType {
-	None, Brick, Target,
+	None = 0, Brick = 1, Target = 2, ILLEGAL = -1
 }
 
 const CellSize = Vector2(64, 64)
@@ -17,10 +17,55 @@ const map: Array = [
 	[1,1,1,1,1,1,1,1],
 ]
 
-var blocks: Array = [
+var blocks: Array = [ # Vector2i
 	Vector2(4,3), Vector2(5,3), Vector2(6,3)
 ]
-var playerPos = Vector2(5,4)
+const playerPos = Vector2(5,4) # Vector2i
 
-static func pos(col: int, row: int) -> Vector2:
-	return Padding + CellSize / 2 + (CellSize + Padding) * Vector2(col, row)
+var mapRect = Rect2(Vector2.ZERO, Vector2(map[0].size(), map.size()))
+func cellTypeAt(p: Vector2) -> int: # -> CellType
+	if mapRect.has_point(p):
+		return map[int(p.y)][int(p.x)]
+	return CellType.ILLEGAL 
+
+# return 0 | 1
+func countTargetAt(p: Vector2) -> int:
+	return 1 if cellTypeAt(p) else 0
+
+func isBlankAt(pos: Vector2) -> bool:
+	match cellTypeAt(pos):
+		CellType.None, CellType.Target: return true
+		_: return false
+
+func countTargets() -> int:
+	var ret := 0
+	for row in map:
+		ret += row.count(CellType.Target)
+	return ret
+
+# count matched according to blocks Array
+func countMatchedTargets() -> int:
+	var ret := 0
+	for pos in blocks:
+		ret += countTargetAt(pos)
+	return ret
+
+# p: Vector2i(col, row)
+static func pos(p: Vector2) -> Vector2:
+	return Padding + CellSize / 2 + (CellSize + Padding) * p
+
+# direction: Vector2i
+static func reached(node: Node2D, direction: Vector2, targetPos: Vector2) -> bool:
+	match direction:
+		Vector2.UP:    return node.position.y <= targetPos.y
+		Vector2.DOWN:  return node.position.y >= targetPos.y
+		Vector2.LEFT:  return node.position.x <= targetPos.x
+		Vector2.RIGHT: return node.position.x >= targetPos.x
+		_:             return true
+
+# pos: Vector2i
+# direction: Vector2i = UP | DOWN | LEFT | RIGHT
+func canPushBlock(pos: Vector2, direction: Vector2) -> bool:
+	var nextPos = pos + direction
+	return isBlankAt(nextPos) && !blocks.has(nextPos)
+

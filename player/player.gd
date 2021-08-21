@@ -1,5 +1,7 @@
 class_name Player
-extends KinematicBody2D
+extends Movable
+
+# const BlockScene = preload("res://cell/Block.tscn")
 
 # Keep this in sync with the AnimationTree's state names and numbers.
 enum States {
@@ -11,43 +13,75 @@ enum States {
 
 const speed = Vector2(360.0, 360.0)
 
-var v = Vector2.ZERO # velocity
-var d = Vector2.ZERO # direction TODO Vector2i
-
 onready var sprite = $Sprite
 onready var sprite_scale = sprite.scale.x
 
 func _ready():
 	$AnimationTree.active = true
 
-func _physics_process(_delta):
-	v.x = (Input.get_action_strength("move_right") - Input.get_action_strength("move_left")) * speed.x
-	v.y = (Input.get_action_strength("move_down") - Input.get_action_strength("move_up")) * speed.y
-	d = Vector2(
-		1 if v.x > 0 else -1 if v.x < 0 else 0,
-		1 if v.y > 0 else -1 if v.y < 0 else 0
+static func direction_from_input() -> Vector2:
+	return (
+		Vector2.RIGHT if Input.get_action_strength("move_right") > 0 else
+		Vector2.LEFT  if Input.get_action_strength("move_left") > 0 else 
+		Vector2.DOWN  if Input.get_action_strength("move_down") > 0 else
+		Vector2.UP    if Input.get_action_strength("move_up") > 0 else
+		Vector2.ZERO
 	)
-	if d.x != 0:
-		$AnimationTree["parameters/state/current"] = States.RUN
-	elif d.y == 1:
-		$AnimationTree["parameters/state/current"] = States.DOWN
-	elif d.y == -1:
-		$AnimationTree["parameters/state/current"] = States.UP
-	else:
-		$AnimationTree["parameters/state/current"] = States.IDLE
-	
-	if d.x != 0: # flipping
-		sprite.transform.x = Vector2(d.x * sprite_scale, 0)
 
-	if d == Vector2.ZERO:
+func _input(e):
+	if isMoving():
+		return
+	
+	var d := direction_from_input()
+	animate(d)
+	
+	if d != Vector2.ZERO:
+		print("_input: %s" % e)
+		if canMove(d):
+			move(d)
+	
+# d: Vector2i = UP | DOWN | LEFT | RIGHT
+func canMove(d: Vector2) -> bool:
+	var nextPos = pos + d
+	return g.isBlankAt(nextPos) && (
+		!g.blocks.has(nextPos) || g.canPushBlock(nextPos, d)
+	)
+
+func animate(d: Vector2):
+	match d: # Vector2i
+		Vector2.RIGHT, Vector2.LEFT:
+			$AnimationTree["parameters/state/current"] = States.RUN
+			# flipping
+			sprite.transform.x = Vector2(d.x * sprite_scale, 0)
+		Vector2.DOWN:
+			$AnimationTree["parameters/state/current"] = States.DOWN
+		Vector2.UP:
+			$AnimationTree["parameters/state/current"] = States.UP
+		Vector2.ZERO:
+			$AnimationTree["parameters/state/current"] = States.IDLE
+
+func _physics_process(_delta):
+	if ! isMoving():
 		return
 
-	v = move_and_slide(v)
+	var targetPos = GameData.pos(pos + direction)
+	if GameData.reached(self, direction, targetPos):
+		print("%s reached: %s -> %s" % [name, position, targetPos])
+		pos += direction
+		direction = Vector2.ZERO
+		if direction_from_input() == Vector2.ZERO:
+			position = targetPos
+			$AnimationTree["parameters/state/current"] = States.IDLE
+
+		return
+	
+	move_and_slide(speed * direction)
 	if get_slide_count() > 0:
 		var b = get_slide_collision(0).collider
 		if b.is_in_group("blocks"):
-			if !b.tryMove(d):
-				pass # TODO sound ""
+			if b.isMoving():
+				return
+			if g.canPushBlock(b.pos, direction):
+				b.move(direction)
+			# else TODO sound ""
 
-	
-	

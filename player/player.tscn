@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://player/player.gd" type="Script" id=1]
 [ext_resource path="res://player/gBot.png" type="Texture" id=2]
@@ -838,8 +838,6 @@ tracks/16/keys = {
 "values": [ -69.0495, -61.2157, -59.8623, -53.6418, -34.8144, -56.766, -46.3663, -57.7804, -69.0495 ]
 }
 
-[sub_resource type="AnimationNodeTimeScale" id=33]
-
 [sub_resource type="AnimationNodeAnimation" id=30]
 animation = "down"
 
@@ -865,9 +863,7 @@ input_3/auto_advance = false
 animation = "up"
 
 [sub_resource type="AnimationNodeBlendTree" id=27]
-graph_offset = Vector2( -141.72, 127.325 )
-nodes/TimeScale/node = SubResource( 33 )
-nodes/TimeScale/position = Vector2( 300, 300 )
+graph_offset = Vector2( -124.268, 132.982 )
 nodes/down_animation/node = SubResource( 30 )
 nodes/down_animation/position = Vector2( 285.28, 455.051 )
 nodes/idle_animation/node = SubResource( 29 )
@@ -879,7 +875,7 @@ nodes/state/node = SubResource( 28 )
 nodes/state/position = Vector2( 140, 160 )
 nodes/up_animation/node = SubResource( 32 )
 nodes/up_animation/position = Vector2( -10, 470 )
-node_connections = [ "state", 0, "idle_animation", "state", 1, "TimeScale", "state", 2, "up_animation", "state", 3, "down_animation", "output", 0, "state", "TimeScale", 0, "run_animation" ]
+node_connections = [ "state", 0, "idle_animation", "state", 1, "run_animation", "state", 2, "up_animation", "state", 3, "down_animation", "output", 0, "state" ]
 
 [sub_resource type="RectangleShape2D" id=24]
 extents = Vector2( 3.27036, 7.24784 )
@@ -899,10 +895,10 @@ anims/up = SubResource( 26 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 27 )
 anim_player = NodePath("../AnimationPlayer")
-parameters/TimeScale/scale = 1.0
 parameters/state/current = 0
 
 [node name="Sprite" type="Node2D" parent="."]
+position = Vector2( 0, 10 )
 scale = Vector2( 0.07, 0.07 )
 
 [node name="Skeleton2D" type="Skeleton2D" parent="Sprite"]
@@ -1069,5 +1065,4 @@ bones = [ NodePath("Hip"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 internal_vertex_count = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 1.68249, -2.73027 )
 shape = SubResource( 24 )
