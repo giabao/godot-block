@@ -88,7 +88,7 @@ const levels := [
 	],
 	player = [6,2]
 },
-{   # 4. Values are in enum CellType
+{   # 6. Values are in enum CellType
 	map = [
 		[0,1,1,1,1,1,1,0],
 		[1,1,0,0,0,0,1,1],
