@@ -1,8 +1,17 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://GameMap.gd" type="Script" id=1]
+[ext_resource path="res://GUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameMain.gd" type="Script" id=3]
 
 [node name="GameMain" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="GUI" parent="." instance=ExtResource( 2 )]
+margin_left = 1264.34
+margin_top = 4.87389
+margin_right = 1438.34
+margin_bottom = 64.8739
 
 [node name="GameMap" type="Node2D" parent="."]
 scale = Vector2( 2, 2 )

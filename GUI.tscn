@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://icons/actualize-arrows-couple-in-circle.png" type="Texture" id=1]
+[ext_resource path="res://icons/gear.png" type="Texture" id=3]
+
+[node name="GUI" type="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -444.0
+margin_bottom = 172.0
+
+[node name="tools" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -232.0
+margin_right = 82.0
+margin_bottom = 136.0
+rect_scale = Vector2( 0.7, 0.7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reset" type="ToolButton" parent="tools"]
+margin_right = 140.0
+margin_bottom = 136.0
+rect_min_size = Vector2( 32, 32 )
+focus_mode = 0
+icon = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Setting" type="ToolButton" parent="tools"]
+margin_left = 144.0
+margin_right = 284.0
+margin_bottom = 136.0
+rect_min_size = Vector2( 32, 32 )
+focus_mode = 0
+icon = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

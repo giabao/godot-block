@@ -7,18 +7,18 @@ const BlockScene  = preload("res://block/Block.tscn")
 const PlayerScene = preload("res://player/player.tscn") 
 
 const CellType = GameData.CellType
-var g = GameLevels.data(5)
 
-var targetCount = g.countTargets()
-var targetMatched: int = g.countMatchedTargets()
+signal completed_level
 
-# pos: Vector2i(col, row)
-func _addCell(cell: Node2D, pos: Vector2):
-	cell.position = GameData.pos(pos)
-	add_child(cell)
-	cell.owner = self
+var g: GameData
+var targetCount: int
+var targetMatched: int
 
-func _ready():
+func init(data: GameData) -> GameMap:
+	g = data
+	targetCount = g.countTargets()
+	targetMatched = g.countMatchedTargets()
+
 	var cell: Node2D
 	for row in g.map.size():
 		for col in g.map[row].size():
@@ -38,6 +38,15 @@ func _ready():
 	cell = PlayerScene.instance().init(g, g.playerPos)
 	_addCell(cell, g.playerPos)
 
+	scale = Vector2(2, 2)
+
+	return self
+
+# pos: Vector2i(col, row)
+func _addCell(cell: Node2D, pos: Vector2):
+	cell.position = GameData.pos(pos)
+	add_child(cell)
+	cell.owner = self
 
 func _on_block_moved(prevPos: Vector2, direction: Vector2):
 	print("_on_block_moved %s -> %s" % [prevPos, direction])
@@ -48,4 +57,4 @@ func _on_block_moved(prevPos: Vector2, direction: Vector2):
 	g.blocks[i] = prevPos + direction
 
 	if targetMatched == targetCount:
-		print("Yeah! You win!")
+		emit_signal("completed_level")
