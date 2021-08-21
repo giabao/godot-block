@@ -7,7 +7,7 @@ const BlockScene  = preload("res://block/Block.tscn")
 const PlayerScene = preload("res://player/player.tscn") 
 
 const CellType = GameData.CellType
-var g = GameLevels.data(4)
+var g = GameLevels.data(5)
 
 var targetCount = g.countTargets()
 var targetMatched: int = g.countMatchedTargets()
