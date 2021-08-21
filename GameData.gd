@@ -7,40 +7,14 @@ enum CellType {
 const CellSize = Vector2(64, 64)
 const Padding = Vector2(1, 1)
 
-# const levels := [
-# {
-# 	map = [
-# 		[0,1,1,1,1,1,1,0],
-# 		[1,1,0,0,0,0,1,1],
-# 		[1,0,2,2,0,0,0,1],
-# 		[1,0,1,0,0,0,0,1],
-# 		[1,0,0,0,1,0,2,1],
-# 		[1,1,1,1,1,1,1,1],
-# 	],
-# 	blocks = [
-# 		[4,3], [5,3], [6,3]
-# 	],
-# 	player = [5,4]
-# },
-# ]
-# Values are in enum CellType
-const map: Array = [
-	[0,1,1,1,1,1,1,0],
-	[1,1,0,0,0,0,1,1],
-	[1,0,2,2,0,0,0,1],
-	[1,0,1,0,0,0,0,1],
-	[1,0,0,0,1,0,2,1],
-	[1,1,1,1,1,1,1,1],
-]
 
-var blocks: Array = [ # Vector2i
-	Vector2(4,3), Vector2(5,3), Vector2(6,3)
-]
-const playerPos = Vector2(5,4) # Vector2i
+var map: Array
+var blocks: Array # array of Vector2i
+var playerPos: Vector2 # Vector2i
+var _mapRect: Rect2
 
-var mapRect = Rect2(Vector2.ZERO, Vector2(map[0].size(), map.size()))
 func cellTypeAt(p: Vector2) -> int: # -> CellType
-	if mapRect.has_point(p):
+	if _mapRect.has_point(p):
 		return map[int(p.y)][int(p.x)]
 	return CellType.ILLEGAL 
 
