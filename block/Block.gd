@@ -11,3 +11,10 @@ func move(d: Vector2) -> void:
 
 func isMoving() -> bool:
 	return $StateMachine.state.name == "Moving"
+
+func _ready():
+    $matched.visible = g.countTargetAt(pos)
+    $StateMachine.connect("transitioned", self, "_on_transitioned")
+
+func _on_transitioned(state_name: String) -> void:
+    $matched.visible = g.countTargetAt(pos)
