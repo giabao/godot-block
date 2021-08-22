@@ -16,16 +16,7 @@ onready var sprite_scale = sprite.scale.x
 
 func _ready():
 	$AnimationTree.active = true
-
-static func direction_from_input() -> Vector2:
-	return (
-		Vector2.RIGHT if Input.get_action_strength("move_right") > 0 else
-		Vector2.LEFT  if Input.get_action_strength("move_left") > 0 else 
-		Vector2.DOWN  if Input.get_action_strength("move_down") > 0 else
-		Vector2.UP    if Input.get_action_strength("move_up") > 0 else
-		Vector2.ZERO
-	)
-
+	$StateMachine.connect("transitioned", self, "_on_state_transitioned")
 
 func animate(d: Vector2):
 	match d: # Vector2i
@@ -40,3 +31,47 @@ func animate(d: Vector2):
 		Vector2.ZERO:
 			$AnimationTree["parameters/state/current"] = AnimStates.IDLE
 
+
+
+static func direction_from_input() -> Vector2:
+	return (
+		Vector2.RIGHT if Input.get_action_strength("move_right") > 0 else
+		Vector2.LEFT  if Input.get_action_strength("move_left") > 0 else 
+		Vector2.DOWN  if Input.get_action_strength("move_down") > 0 else
+		Vector2.UP    if Input.get_action_strength("move_up") > 0 else
+		Vector2.ZERO
+	)
+
+var next_direction := Vector2.ZERO
+func _on_state_transitioned(new_state):
+	if new_state == "Moving":
+		next_direction = Vector2.ZERO
+##########
+var swipe_start := Vector2.ZERO
+const minimum_drag = 100
+
+func calc_next_direction(e):
+	var d := Vector2.ZERO
+	if e is InputEventScreenTouch:
+		print("touch: %s, %s" % [e.pressed, e.get_position()])
+		if e.pressed:
+			swipe_start = e.get_position()
+		else:
+			d = _calculate_swipe(e.get_position())
+	else:
+		d = direction_from_input()
+	if d != Vector2.ZERO:
+		next_direction = d
+
+func _calculate_swipe(swipe_end: Vector2) -> Vector2:
+	if swipe_start == Vector2.ZERO: 
+		return Vector2.ZERO
+	
+	var swipe = swipe_end - swipe_start
+	return (
+		Vector2.RIGHT if swipe.x > minimum_drag else
+		Vector2.LEFT  if swipe.x < -minimum_drag else
+		Vector2.DOWN  if swipe.y > minimum_drag else
+		Vector2.UP    if swipe.y < -minimum_drag else
+		Vector2.ZERO
+	)

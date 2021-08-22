@@ -3,13 +3,17 @@ extends PlayerState
 
 # Upon entering the state, we set the Player node's velocity to zero.
 func enter(_msg := {}) -> void:
-	player.animate(Vector2.ZERO)
+    player.animate(Vector2.ZERO)
 
 func handle_input(e):
-	var d := Player.direction_from_input()
-	player.animate(d)
-	
-	if d != Vector2.ZERO:
-		print("_input: %s" % e)
-		if g.canMovePlayer(player.pos, d):
-			state_machine.transition_to("Moving", {direction = d})
+    player.calc_next_direction(e)
+    player.animate(player.next_direction)
+
+    if ! (e is InputEventMouseMotion || e is InputEventScreenDrag):
+        print("_input: %s" % e)
+    
+    if player.next_direction != Vector2.ZERO:
+        if g.canMovePlayer(player.pos, player.next_direction):
+            state_machine.transition_to("Moving", {direction = player.next_direction})
+        else:
+            player.next_direction = Vector2.ZERO
