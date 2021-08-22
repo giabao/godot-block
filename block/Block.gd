@@ -1,7 +1,7 @@
 class_name Block
 extends Movable
 
-signal block_moved
+signal block_moved(pos, direction)
 
 # Vector2i
 # require: g.canPushBlock(pos, d)
