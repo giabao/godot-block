@@ -30,5 +30,6 @@ func physics_update(_delta: float) -> void:
 		block.position = targetPos
 		state_machine.transition_to("Idle")
 		return 
-	
+
+    #warning-ignore:return_value_discarded
 	block.move_and_slide(speed * direction)

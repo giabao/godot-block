@@ -16,6 +16,7 @@ onready var sprite_scale = sprite.scale.x
 
 func _ready():
 	$AnimationTree.active = true
+    #warning-ignore:return_value_discarded
 	$StateMachine.connect("transitioned", self, "_on_state_transitioned")
 
 func animate(d: Vector2):

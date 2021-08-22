@@ -20,6 +20,7 @@ func physics_update(_delta: float) -> void:
 			state_machine.transition_to("Idle")
 		return
 	
+    #warning-ignore:return_value_discarded
 	player.move_and_slide(player.speed * direction)
 	if player.get_slide_count() > 0:
 		var b := player.get_slide_collision(0).collider as Block

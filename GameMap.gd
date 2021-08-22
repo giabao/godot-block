@@ -32,6 +32,7 @@ func init(data: GameData) -> GameMap:
 	
 	for p in g.blocks:
 		cell = BlockScene.instance().init(g, p)
+        #warning-ignore:return_value_discarded
 		cell.connect("block_moved", self, "_on_block_moved")
 		_addCell(cell, p)
 	

@@ -7,7 +7,7 @@ var pos: Vector2 # current pos Vector2i(col, row)
 
 # must be called before add this block to scene
 # pos: Vector2i
-func init(g: GameData, pos: Vector2) -> Movable:
-	self.g = g
-	self.pos = pos
+func init(_g: GameData, _pos: Vector2) -> Movable:
+	g = _g
+	pos = _pos
 	return self
